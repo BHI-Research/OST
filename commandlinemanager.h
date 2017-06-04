@@ -18,6 +18,7 @@ public:
     int getFramesNumber();
     string getReferencePath();
     string getDataPath();
+    string getMethod();
     bool isDoubleEnabled();
     bool isPrintVerbose();
 
@@ -33,6 +34,7 @@ private:
     int frames;
     string referencePath;
     string dataPath;
+    string method;
 };
 
 #endif // COMMANDLINEMANAGER_H

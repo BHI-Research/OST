@@ -56,10 +56,10 @@ void Measurer::computeMetrics() {
             lastWindowFrame = referenceFrame.getPosition() + windowFrames;
 
             //check delta distance
-            if( (measuredFrame.getPosition() >= firstWindowFrame ) &&
+            if( windowFrames < 0 || (measuredFrame.getPosition() >= firstWindowFrame ) &&
                 (measuredFrame.getPosition() <= lastWindowFrame) ) {
                 actualDistance = referenceFrame.comparHistogramTo( measuredFrame );
-                if( actualDistance > this->distanceThreshold ) {
+                if( fabs(actualDistance) > this->distanceThreshold ) {
                     numberFramesMatched++;
                     //cout << "matched refence " << referenceFrame.getPosition() <<
                     //        " and measured " << measuredFrame.getPosition() <<

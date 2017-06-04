@@ -1,4 +1,6 @@
 #include "commandlinemanager.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 static const char FLAG_EPSILON = 'e';
 static const char FLAG_DISTANCE = 'd';
@@ -8,6 +10,7 @@ static const char FLAG_USERS = 'n';
 static const char FLAG_FRAMES = 'f';
 static const char * FLAG_ENABLE_DOUBLE_ZONE = "enable-double-zone";
 static const char * FLAG_PRINT_VERBOSE = "verbose";
+static const char * METHOD = "method";
 
 using namespace std;
 
@@ -29,6 +32,7 @@ CommandLineManager::CommandLineManager( int argc, char **argv ) {
 
         static struct option long_options[] = {
             { FLAG_ENABLE_DOUBLE_ZONE, no_argument, 0, 0 },
+            { METHOD, required_argument, 0, 1 },
             { FLAG_PRINT_VERBOSE, no_argument, 0, 'v' }
         };
 
@@ -40,6 +44,10 @@ CommandLineManager::CommandLineManager( int argc, char **argv ) {
         switch(c) {
         case 0:
             doubleZoneIsEnable = true;
+            break;
+
+        case 1:
+            method = optarg;
             break;
 
         case 'v':
@@ -78,15 +86,25 @@ CommandLineManager::CommandLineManager( int argc, char **argv ) {
         }
     }
 
-    if( epsilonIsSet && distanceIsSet && referenceIsSet && dataIsSet && usersIsSet && framesIsSet) {
+    bool validInput;
+    if( method != "bhi" && method != "cus") {
+        validInput = false;
+        cout << "ERROR! Invalid evaluation method." << endl;
+        cout << "Possible values are: bhi, cus" << endl;
+    }
+    else if( method == "bhi" && epsilonIsSet && distanceIsSet && referenceIsSet && dataIsSet && usersIsSet && framesIsSet || // Valid input for BHI
+            method == "cus" && epsilonIsSet && !distanceIsSet && referenceIsSet && dataIsSet && usersIsSet && framesIsSet) { // Valid input for CUS
         validInput = true;
     }
     else {
         validInput = false;
-        cout << "ERROR! Run:" << endl;
-        cout << "./metric -e [epsilon] -d [distance] -n [users count] -r [reference path] -i [data path]" << endl;
-        cout << "Optional flags: --enable-double-zone --verbose" << endl;
+        cout << "ERROR! Run BHI or CUS evaluation method:" << endl;
+        cout << "./osm --method bhi -e [epsilon] -d [distance] -n [users count] -r [reference path] -i [data path]" << endl;
+        cout << "./osm --method cus -e [epsilon] -n [users count] -r [reference path] -i [data path]" << endl;
+        cout << "Optional flags: --enable-double-zone (BHI only) --verbose" << endl;
     }
+
+    this->validInput = validInput;
 }
 
 float CommandLineManager::getEpsilon() {
@@ -113,6 +131,10 @@ string CommandLineManager::getDataPath() {
     return this->dataPath;
 }
 
+string CommandLineManager::getMethod() {
+    return this->method;
+}
+
 bool CommandLineManager::isDoubleEnabled() {
     return this->doubleZoneIsEnable;
 }
@@ -122,5 +144,5 @@ bool CommandLineManager::isPrintVerbose() {
 }
 
 bool CommandLineManager::isInputValid() {
-    return validInput;
+    return this->validInput;
 }
