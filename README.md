@@ -14,8 +14,8 @@ If you are using an Ubuntu-based distribution, check out the [official site](htt
 
 Compile from source:
 ```
-$ git clone https://jiparraguirre@bitbucket.org/jiparraguirre/open-summarization-metrics.git
-$ cd open-summarization-metrics/
+$ git clone git@github.com:leanbalma/OSM.git
+$ cd OSM/
 $ mkdir build
 $ cd build
 $ cmake ..
