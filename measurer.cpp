@@ -32,7 +32,7 @@ void Measurer::computeMetrics() {
     numberFramesMatched = 0;
     numberFramesNonMatched = 0;
     numberFramesReference = referenceData.size();
-    numerFramesMeasure = meassuredData.size();
+    numberFramesMeasure = meassuredData.size();
 
     // Duplicate meassureData to avoid wrong results.
     vector<Frame> newMeassuredData = meassuredData;
@@ -91,6 +91,30 @@ void Measurer::setMeasuredData( vector<Frame> data ) {
     this->meassuredData = data;
 }
 
+double Measurer::getPrecision() {
+    double result = 0.0f;
+    if( 0 != numberFramesMeasure ) {
+        result = (double)numberFramesMatched / (double)numberFramesMeasure;
+    }
+    else {
+        result = -1.0f;
+    }
+
+    return result;
+}
+
+double Measurer::getRecall() {
+    double result = 0.0f;
+    if( 0 != numberFramesReference ) {
+        result = (double)numberFramesMatched / (double)numberFramesReference;
+    }
+    else {
+        result = -1.0f;
+    }
+
+    return result;
+}
+
 double Measurer::getCUSa() {
 
     double result = 0.0f;
@@ -135,7 +159,7 @@ double Measurer::getKappa() {
 
     nYmYr = numberFramesMatched;
     nNmYr = numberFramesReference - numberFramesMatched;
-    nYmNr = numerFramesMeasure - numberFramesMatched;
+    nYmNr = numberFramesMeasure - numberFramesMatched;
     nNmNr = totalNumberOfFrames - nYmYr - nNmYr - nYmNr;
 
     pO = (double)( nYmYr + nNmNr ) / (double)totalNumberOfFrames;

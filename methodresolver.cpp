@@ -23,6 +23,8 @@ void MethodResolver::evaluate(float epsilon, int distance, string referencePath,
 
     float CUSa = 0.0f;
     float CUSe = 0.0f;
+    float precision = 0.0f;
+    float recall = 0.0f;
     float Kappa = 0.0f;
 
     for( int i = 1; i <= usersNumber; i++ ) {
@@ -47,6 +49,8 @@ void MethodResolver::evaluate(float epsilon, int distance, string referencePath,
 
             CUSa = CUSa + measurer.getCUSa();
             CUSe = CUSe + measurer.getCUSe();
+            precision = precision + measurer.getPrecision();
+            recall = recall + measurer.getRecall();
             Kappa = Kappa + measurer.getKappa();
         }
         else {
@@ -58,13 +62,15 @@ void MethodResolver::evaluate(float epsilon, int distance, string referencePath,
     CUSe = CUSe / (double)usersNumber;
     Kappa = Kappa / (double)usersNumber;
 
-    double recall = CUSa;
-    double precision = CUSa / ( CUSa + CUSe );
+    precision = precision / (double)usersNumber;
+    recall = recall / (double)usersNumber;
 
     double Fmeter = ( 2.0 * precision * recall ) / ( precision + recall );
 
     this->CUSa = CUSa;
     this->CUSe = CUSe;
+    this->precision = precision;
+    this->recall = recall;
     this->Kappa = Kappa;
     this->Fmeter = Fmeter;
     this->printVerbose = printVerbose;
@@ -74,11 +80,13 @@ void MethodResolver::printResults() {
     if( printVerbose ) {
         cout << "CUSa: " << this->CUSa << endl;
         cout << "CUSe: " << this->CUSe << endl;
+        cout << "precision: " << this->precision << endl;
+        cout << "recall: " << this->recall << endl;
         cout << "F-meter: " << this->Fmeter << endl;
         cout << "Cohen's Kappa: " << this->Kappa << endl;
     }
     else {
-        cout << this->CUSa << "\t" << this->CUSe << "\t" << this->Fmeter << "\t" << this->Kappa;
+        cout << this->CUSa << "\t" << this->CUSe << "\t" << this->precision << "\t" << this->recall << "\t" << this->Fmeter << "\t" << this->Kappa;
     }
 
 }

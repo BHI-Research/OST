@@ -27,6 +27,8 @@ public:
     double getCUSe();
     double getFmeasure();
     double getKappa();
+    double getPrecision();
+    double getRecall();
 
 private:
     int windowFrames;
@@ -35,7 +37,7 @@ private:
     string referencePath, dataPath;
     vector<Frame> referenceData;
     vector<Frame> meassuredData;
-    int numberFramesMatched, numberFramesNonMatched, numberFramesReference, numerFramesMeasure, totalNumberOfFrames;
+    int numberFramesMatched, numberFramesNonMatched, numberFramesReference, numberFramesMeasure, totalNumberOfFrames;
 
 };
 

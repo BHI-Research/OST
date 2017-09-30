@@ -20,6 +20,8 @@ private:
     void evaluate(float epsilon, int distance, string referencePath, string dataPath, bool doubleZone, int usersNumber, int frames, bool printVerbose);
     float CUSa;
     float CUSe;
+    float precision;
+    float recall;
     float Kappa;
     double Fmeter;
     bool printVerbose;
