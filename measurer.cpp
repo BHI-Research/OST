@@ -141,11 +141,12 @@ double Measurer::getCUSe() {
 }
 
 double Measurer::getFmeasure() {
-    double CUSa = getCUSa();
-    double CUSe = getCUSe();
+    double recall = getRecall();
+    double precision = getPrecision();
 
-    double recall = CUSa;
-    double precision = CUSa / ( CUSa + CUSe );
+    if( !recall && !precision ) {
+        return -1.0f;
+    }
 
     double Fmeter = ( 2.0 * precision * recall ) / ( precision + recall );
 

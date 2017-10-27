@@ -65,7 +65,10 @@ void MethodResolver::evaluate(float epsilon, int distance, string referencePath,
     precision = precision / (double)usersNumber;
     recall = recall / (double)usersNumber;
 
-    double Fmeter = ( 2.0 * precision * recall ) / ( precision + recall );
+    double Fmeter = -1.0f;
+    if( precision || recall ) {
+        Fmeter = ( 2.0 * precision * recall ) / ( precision + recall );
+    }
 
     this->CUSa = CUSa;
     this->CUSe = CUSe;
