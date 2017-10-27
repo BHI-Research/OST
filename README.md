@@ -18,7 +18,7 @@ $ git clone git@github.com:leanbalma/OSM.git
 $ cd OSM/
 $ mkdir build
 $ cd build
-$ cmake ..
+$ cmake ../src
 $ make
 ```
 
