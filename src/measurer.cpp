@@ -59,21 +59,26 @@ void Measurer::computeMetrics() {
             if( windowFrames < 0 || (measuredFrame.getPosition() >= firstWindowFrame ) &&
                 (measuredFrame.getPosition() <= lastWindowFrame) ) {
                 actualDistance = referenceFrame.comparHistogramTo( measuredFrame );
+
+                cout << "refence " << referenceFrame.getPosition() <<
+                    " and measured " << measuredFrame.getPosition() <<
+                    " distance: " << actualDistance;
                 if( fabs(actualDistance) > this->distanceThreshold ) {
                     numberFramesMatched++;
-                    //cout << "matched refence " << referenceFrame.getPosition() <<
-                    //        " and measured " << measuredFrame.getPosition() <<
-                    //        " distance: " << actualDistance << endl;
+                    cout << "  Matched!" << endl;
+
 
                     // If the frame is matched, remove it from vector.
                     newMeassuredData.erase(itM);
                     break;
+                } else {
+                    cout << endl;
                 }
             }
         }
     }
-    // cout << "meassured data: " << meassuredData.size() << endl;
-    // cout << "number frames matched: " << numberFramesMatched << endl;
+    cout << "meassured data: " << meassuredData.size() << endl;
+    cout << "number frames matched: " << numberFramesMatched << endl;
     numberFramesNonMatched = meassuredData.size() - numberFramesMatched;
     this->isComputing = false;
     // this->printResults();
@@ -125,6 +130,7 @@ double Measurer::getCUSa() {
         result = -1.0f;
     }
 
+    cout << "cusa = " << numberFramesMatched << "/" << numberFramesReference << "=" << result << endl;
     return result;
 }
 
@@ -136,6 +142,8 @@ double Measurer::getCUSe() {
     else {
         result = -1.0f;
     }
+    cout << "cuse = " << numberFramesNonMatched << "/" << numberFramesReference << "=" << result << endl;
+    cout << endl;
 
     return result;
 }
