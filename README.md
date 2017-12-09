@@ -4,7 +4,11 @@ Open Summarization Metrics (OSM) is a evaluation method for video summaries. It 
 
 ## How OSM works
 
-OSM compares the keyframes of a summarization method with the keyframes selected by human users to quantify the quality of the abstraction. The frames are compared extracting a HSV color space histogram. If the correlation between two histograms is higher that an threshold, the frames are considered equivalent. OSM offers three metrics to the user. The first is Cohen's Kappa coefficient. The second metric is F-measure coefficient. Finally, it offers CUSa and CUSe as a compatibility feature.
+OSM compares the keyframes of a summarization method with the keyframes selected by human users to quantify the quality of the abstraction. The frames are compared extracting a HSV color space histogram. If the correlation between two histograms is higher that a threshold, the frames are considered equivalent. OSM offers four metrics to the user:
+* Cohen's Kappa.
+* F-measure coefficient.
+* Precision and Recall.
+* CUSa and CUSe (as a compatibility feature).
 
 ## Compile from source
 At this first version, OpenCV is required.
@@ -41,17 +45,18 @@ OSM is a very customizable evaluation method. You can edit the following paramet
 
     [ CUSa ] ( Tab ) [ CUSe ] ( Tab ) [ F-meter ] ( Tab ) [ Cohen's Kappa ]
 
-You can 
 
 Example of usage:
 
 ```
 $ ./osm --method bhi -e 0.4 -d 120 -n 5 -f 2091 -r "reference/" -i "data/"  -- enable-double-zone --verbose
 
-CUSa: 0.538462
-CUSe: 0.176923
-F-meter: 0.627803
-Cohen's Kappa: 0.626701
+CUSa: 0.54
+CUSe: 0.18
+precision: 0.76
+recall: 0.54
+F-meter: 0.63
+Cohen's Kappa: 0.63
 ```
 
 ## Examples
@@ -65,10 +70,12 @@ Example 1: Usual example
   Users: 5
   Simple zone
 Running BHI...
-CUSa: 0.474359
-CUSe: 0.241026
-F-meter: 0.553064
-Cohen's Kappa: 0.551868
+CUSa: 0.47
+CUSe: 0.24
+precision: 0.67
+recall: 0.47
+F-meter: 0.55
+Cohen's Kappa: 0.55
 Done!
 
 $ sh script-usual-example-cus.sh 
@@ -77,10 +84,12 @@ Example 1: Usual example
   Users: 5
   Simple zone
 Running CUS...
-CUSa: 0.474359
-CUSe: 0.241026
-F-meter: 0.553064
-Cohen's Kappa: 0.551868
+CUSa: 0.62
+CUSe: 0.10
+precision: 0.87
+recall: 0.62
+F-meter: 0.72
+Cohen's Kappa: 0.72
 Done!
 ```
 
