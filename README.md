@@ -99,8 +99,12 @@ Done!
 
 ## Contributors
 
+* Aggio, Santiago [ slaggio@criba.edu.ar ]
+* Balmaceda, Leandro [ balmacedalm@gmail.com ]
+* Diaz, Ariel [ arielivandiaz@gmail.com ]
 * Iparraguirre, Javier [ j.iparraguirre@computer.org ]
-* Balmaceda, Leandro M. [ balmacedalm@gmail.com ]
+* Rostagno, Adrian [ arostag@frbb.utn.edu.ar ]
+
 
 ## License
 
