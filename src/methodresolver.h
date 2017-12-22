@@ -23,7 +23,7 @@ private:
     float precision;
     float recall;
     float Kappa;
-    double Fmeter;
+    double Fmeasure;
     bool printVerbose;
 };
 

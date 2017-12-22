@@ -148,9 +148,9 @@ double Measurer::getFmeasure() {
         return 0;
     }
 
-    double Fmeter = ( 2.0 * precision * recall ) / ( precision + recall );
+    double Fmeasure = ( 2.0 * precision * recall ) / ( precision + recall );
 
-    return Fmeter;
+    return Fmeasure;
 }
 
 double Measurer::getKappa() {
@@ -179,7 +179,7 @@ double Measurer::getKappa() {
 void Measurer::printResults() {
     cout << "CUSa: " << this->getCUSa() << endl;
     cout << "CUSe: " << this->getCUSe() << endl;
-    cout << "F-meter: " << this->getFmeasure() << endl;
+    cout << "F-measure: " << this->getFmeasure() << endl;
     cout << "Cohen's Kappa: " << this->getKappa() << endl;
     cout << "numberFramesMatched: " << numberFramesMatched << endl;
     cout << "numberFramesNonMatched: " << numberFramesNonMatched << endl;

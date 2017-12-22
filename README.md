@@ -43,7 +43,7 @@ OSM is a very customizable evaluation method. You can edit the following paramet
 * Enable double zone (`--enable-double-zone`): If the argument is used, the distance 'd' is considered at both sides of the user keyframe (the real distance is 2\*d). If the argument is NOT used, only the forward keyframes from the user keyframe will be considered.
 * Verbose (`--verbose`): this argument allows you to run a big number of iterative executions and redirect the output to a text file for post analysis. If the argument is used, the result will be showed with full information. If the argument is NOT used, the result will be showed as:
 
-    [ CUSa ] ( Tab ) [ CUSe ] ( Tab ) [ F-meter ] ( Tab ) [ Cohen's Kappa ]
+    [ CUSa ] ( Tab ) [ CUSe ] ( Tab ) [ F-measure ] ( Tab ) [ Cohen's Kappa ]
 
 
 Example of usage:
@@ -55,7 +55,7 @@ CUSa: 0.54
 CUSe: 0.18
 precision: 0.76
 recall: 0.54
-F-meter: 0.63
+F-measure: 0.63
 Cohen's Kappa: 0.63
 ```
 
@@ -74,7 +74,7 @@ CUSa: 0.47
 CUSe: 0.24
 precision: 0.67
 recall: 0.47
-F-meter: 0.55
+F-measure: 0.55
 Cohen's Kappa: 0.55
 Done!
 
@@ -88,7 +88,7 @@ CUSa: 0.62
 CUSe: 0.10
 precision: 0.87
 recall: 0.62
-F-meter: 0.72
+F-measure: 0.72
 Cohen's Kappa: 0.72
 Done!
 ```
