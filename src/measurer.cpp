@@ -145,7 +145,7 @@ double Measurer::getFmeasure() {
     double precision = getPrecision();
 
     if( !recall && !precision ) {
-        return -1.0f;
+        return 0;
     }
 
     double Fmeter = ( 2.0 * precision * recall ) / ( precision + recall );
