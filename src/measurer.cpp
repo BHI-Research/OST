@@ -97,7 +97,7 @@ double Measurer::getPrecision() {
         result = (double)numberFramesMatched / (double)numberFramesMeasure;
     }
     else {
-        result = -1.0f;
+        result = 1.0f;
     }
 
     return result;
@@ -109,7 +109,7 @@ double Measurer::getRecall() {
         result = (double)numberFramesMatched / (double)numberFramesReference;
     }
     else {
-        result = -1.0f;
+        result = 1.0f;
     }
 
     return result;

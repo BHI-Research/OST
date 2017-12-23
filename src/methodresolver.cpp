@@ -65,7 +65,7 @@ void MethodResolver::evaluate(float epsilon, int distance, string referencePath,
     precision = precision / (double)usersNumber;
     recall = recall / (double)usersNumber;
 
-    double Fmeasure = -1.0f;
+    double Fmeasure = 0;
     if( precision || recall ) {
         Fmeasure = ( 2.0 * precision * recall ) / ( precision + recall );
     }
