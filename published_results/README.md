@@ -6,5 +6,8 @@ The included results are:
 * VSUMM1
 * VSUMM2
 * DT
+* OVS
+* VISTO
+* LFOVS
 
 Results are presented in different formats.
