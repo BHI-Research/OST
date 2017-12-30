@@ -5,6 +5,8 @@ import pandas as panda
 
 import tables
 
+import ntpath
+
 import cv2
 import os
 import csv 
@@ -65,12 +67,12 @@ def get_args():
 	parser.add_argument('-d', nargs='?',   type=int, help='Distance parameter for bhi method')
 	parser.add_argument('-u', nargs='?',   type=int, help='Number of users')
 
-	parser.add_argument('-lfovs', '--lfovs', action='store_true',  help='Run LFOVS ')
-	parser.add_argument('-lfovs_s', nargs='?', type=float,  help='LFOVS parameters')
-	parser.add_argument('-lfovs_n', nargs='?', type=float,  help='LFOVS parameters')
-	parser.add_argument('-lfovs_d', nargs='?', type=float,  help='LFOVS parameters')
-	parser.add_argument('-lfovs_t', nargs='?', type=float,  help='LFOVS parameters')
-	parser.add_argument('-lfovs_e', nargs='?', type=int,  help='LFOVS parameters')
+	# parser.add_argument('-lfovs', '--lfovs', action='store_true',  help='Run LFOVS ')
+	# parser.add_argument('-lfovs_s', nargs='?', type=float,  help='LFOVS parameters')
+	# parser.add_argument('-lfovs_n', nargs='?', type=float,  help='LFOVS parameters')
+	# parser.add_argument('-lfovs_d', nargs='?', type=float,  help='LFOVS parameters')
+	# parser.add_argument('-lfovs_t', nargs='?', type=float,  help='LFOVS parameters')
+	# parser.add_argument('-lfovs_e', nargs='?', type=int,  help='LFOVS parameters')
 	parser.add_argument('-ush', '--updatesh', action='store_true', help='No make a new sh, only update')
 
 
@@ -166,35 +168,35 @@ def process_args():
 	else:
 		setattr(parameters, 'users', 5)
 
-	if(args['lfovs']):
-		setattr(parameters, 'lfovs', 1)
-	else:
-		setattr(parameters, 'lfovs', 0)
+	# if(args['lfovs']):
+	# 	setattr(parameters, 'lfovs', 1)
+	# else:
+	# 	setattr(parameters, 'lfovs', 0)
 
-	if(args['lfovs_s']):
-		setattr(parameters, 'lfovs_s', args['lfovs_s'])
-	else:
-		setattr(parameters, 'lfovs_s', 0.4)
-
-	if(args['lfovs_n']):
-		setattr(parameters, 'lfovs_n', args['lfovs_n'])
-	else:
-		setattr(parameters, 'lfovs_n', 0.96)
-
-	if(args['lfovs_d']):
-		setattr(parameters, 'lfovs_d', args['lfovs_d'])
-	else:
-		setattr(parameters, 'lfovs_d', 0.2)
-
-	if(args['lfovs_t']):
-		setattr(parameters, 'lfovs_t', args['lfovs_t'])
-	else:
-		setattr(parameters, 'lfovs_t', 30)
-
-	if(args['lfovs_e']):
-		setattr(parameters, 'lfovs_e', args['lfovs_e'])
-	else:
-		setattr(parameters, 'lfovs_e', 3)
+	# if(args['lfovs_s']):
+	# 	setattr(parameters, 'lfovs_s', args['lfovs_s'])
+	# else:
+	# 	setattr(parameters, 'lfovs_s', 0.4)
+        #
+	# if(args['lfovs_n']):
+	# 	setattr(parameters, 'lfovs_n', args['lfovs_n'])
+	# else:
+	# 	setattr(parameters, 'lfovs_n', 0.96)
+        #
+	# if(args['lfovs_d']):
+	# 	setattr(parameters, 'lfovs_d', args['lfovs_d'])
+	# else:
+	# 	setattr(parameters, 'lfovs_d', 0.2)
+        #
+	# if(args['lfovs_t']):
+	# 	setattr(parameters, 'lfovs_t', args['lfovs_t'])
+	# else:
+	# 	setattr(parameters, 'lfovs_t', 30)
+        #
+	# if(args['lfovs_e']):
+	# 	setattr(parameters, 'lfovs_e', args['lfovs_e'])
+	# else:
+	# 	setattr(parameters, 'lfovs_e', 3)
 
 	if(args['updatesh']):
 		setattr(parameters, 'updatesh', 1)
@@ -256,51 +258,51 @@ def matrix_to_csv(file, matrix):
 
 #/*********************************************************************************************    
 
-def create_random_csv(rows,cols,file,folder,binary_flag,length):
-	
-	size=cols*rows
-
-	if binary_flag:
-	
-		data_frame =  panda.DataFrame(np.random.randint(0,2, size=(rows,cols)))
-	else:
-	
-		summ_lenght =  np.random.randint(0,length*0.05)
-		print 'SUM LEGHT:', summ_lenght
-		data_frame =  panda.DataFrame(np.sort(np.random.randint(0,length, size=(rows,summ_lenght))))
-		
-
-	if os.path.exists(folder) == 0:
-		print 'Folder Created :', folder
-		os.mkdir(folder)
-	file = folder+ '/' + file + '.csv'
-	print "file route: ", file
-	
-
-	data_frame.to_csv(file, sep='\t', encoding='utf-8', index=False, header=False)
+# def create_random_csv(rows,cols,file,folder,binary_flag,length):
+# 	
+# 	size=cols*rows
+#
+# 	if binary_flag:
+# 	
+# 		data_frame =  panda.DataFrame(np.random.randint(0,2, size=(rows,cols)))
+# 	else:
+# 	
+# 		summ_lenght =  np.random.randint(0,length*0.05)
+# 		print 'SUM LEGHT:', summ_lenght
+# 		data_frame =  panda.DataFrame(np.sort(np.random.randint(0,length, size=(rows,summ_lenght))))
+# 		
+#
+# 	if os.path.exists(folder) == 0:
+# 		print 'Folder Created :', folder
+# 		os.mkdir(folder)
+# 	file = folder+ '/' + file + '.csv'
+# 	print "file route: ", file
+# 	
+#
+# 	data_frame.to_csv(file, sep='\t', encoding='utf-8', index=False, header=False)
 
 #/*********************************************************************************************    
-def get_video_info(video_name):
-
-
-	cap = cv2.VideoCapture(video_name)
-
-	length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-	print('FRAMES IN VIDEO:', length )
-
-	ret, frame = cap.read()
-
-	if frame is None: 
-		print 'ERROR: VIDEO NOT FOUND'
-		return
-	elif length == 0:
-		print 'ERROR: VIDEO NOT FOUND'
-		return
-	   
-
-	cap.release()
-
-	return length
+# def get_video_info(video_name):
+#
+#
+# 	cap = cv2.VideoCapture(video_name)
+#
+# 	length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+# 	print('FRAMES IN VIDEO:', length )
+#
+# 	ret, frame = cap.read()
+#
+# 	if frame is None: 
+# 		print 'ERROR: VIDEO NOT FOUND'
+# 		return
+# 	elif length == 0:
+# 		print 'ERROR: VIDEO NOT FOUND'
+# 		return
+# 	   
+#
+# 	cap.release()
+#
+# 	return length
 #/*********************************************************************************************    
 def count_zeros(file_csv):
 
@@ -350,7 +352,7 @@ def get_frame_without_ID(parameters):
 
 
 	
-	VIDEO_NAME=	parameters.video
+	VIDEO_PATH=	parameters.video
 	USERS_CSV=	parameters.users_csv
 	VSUM_CSV=	parameters.vsum_csv
 	FORMAT =  	parameters.format
@@ -358,7 +360,7 @@ def get_frame_without_ID(parameters):
 	JPEG_QUALITY = parameters.quality
 
 
-	cap = cv2.VideoCapture(VIDEO_NAME)
+	cap = cv2.VideoCapture(VIDEO_PATH)
 
 	if cap:
 		print "VIDEO OPENED"
@@ -375,15 +377,30 @@ def get_frame_without_ID(parameters):
 
 	frames=np.array(csv_to_matrix(USERS_CSV)) 
 
-	main_folder_output=VIDEO_NAME
 
-	main_folder_output = main_folder_output.split('/')[3] #Elminate the ../../ +
+        # Get the video name from path.
+        video_name = os.path.basename(VIDEO_PATH)
 
-	main_folder_output = main_folder_output.split('.')[0] #Elminate the file extension
+        # Remove the file extension.
+        video_name = video_name.split('.')[0]
 
-	#main_folder_output = "../../output/" + main_folder_output #Run from osm_utility folder
+        OUTPUT_FOLDER_NAME = 'output'
 
-	main_folder_output = "../output/" + main_folder_output
+        if not os.path.exists(OUTPUT_FOLDER_NAME):
+            os.makedirs(OUTPUT_FOLDER_NAME)
+
+        main_folder_output = os.path.join(OUTPUT_FOLDER_NAME, video_name)
+
+
+	# main_folder_output=VIDEO_NAME
+        #
+	# main_folder_output = main_folder_output.split('/')[3] #Elminate the ../../ +
+        #
+	# main_folder_output = main_folder_output.split('.')[0] #Elminate the file extension
+        #
+	# #main_folder_output = "../../output/" + main_folder_output #Run from osm_utility folder
+        #
+	# main_folder_output = "../output/" + main_folder_output
 
 	setattr(param, 'output_path', main_folder_output)
 
@@ -411,7 +428,7 @@ def get_frame_without_ID(parameters):
 	n_users = frames.shape[0]
 
 
-	if parameters.lfovs & reference_exist:
+	if reference_exist:
 
 		return length
 
@@ -465,51 +482,51 @@ def get_frame_without_ID(parameters):
 	#***************************************************************
 	#***************************************************************
 
-	if not parameters.lfovs:
+	# if not parameters.lfovs:
 		
-		frame_id=0
+        frame_id=0
 
-		folder_output=data_folder
-		frames_VSUM=np.array(csv_to_matrix(VSUM_CSV)) 
+        folder_output=data_folder
+        frames_VSUM=np.array(csv_to_matrix(VSUM_CSV)) 
 
-		length_array=len(frames_VSUM[0])
+        length_array=len(frames_VSUM[0])
 
-			
-		if os.path.exists(folder_output) == 0:
-			os.mkdir(folder_output)
-		else:
-			print 'DIRECTORY', folder_output, 'EXISTS'
-		
-		frame_detection	=0
+                
+        if os.path.exists(folder_output) == 0:
+                os.mkdir(folder_output)
+        else:
+                print 'DIRECTORY', folder_output, 'EXISTS'
+        
+        frame_detection	=0
 
-		while (cap.isOpened()):	
-		
-			if int(frames_VSUM[0][frame_id])==1:
-				
-				
-				#The first argument of cap.set(), number 2 defines that parameter for setting the frame selection.
-				#Number 2 defines flag CV_CAP_PROP_POS_FRAMES which is a 0-based index of the frame to be decoded/captured next.
-				#The second argument defines the frame number in range 0.0-1.0
-				cap.set(1,frame_id+FRAME_ID_OFFSET);
-				#Read the next frame from the video. If you set frame 749 above then the code will return the last frame.
-				ret, frame = cap.read()
-				
-				frame_name = folder_output + '/' + 'Frame%d' % (frame_id)	  + '.' + FORMAT      
-				if(JPEG_QUALITY!=0)	:
-						cv2.imwrite(frame_name, frame, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])		
-				else:
-						cv2.imwrite(frame_name, frame)
-				frame_detection+=1
-				
-			
-			frame_id+=1
-			if frame_id>len(frames_VSUM[0])-1:
-					break;
-			if frame_id==length:   
-				#print 'END OF VECTOR'      
-				break
-		
-		print 'FRAMES DETECTED:',frame_detection
+        while (cap.isOpened()):	
+        
+                if int(frames_VSUM[0][frame_id])==1:
+                        
+                        
+                        #The first argument of cap.set(), number 2 defines that parameter for setting the frame selection.
+                        #Number 2 defines flag CV_CAP_PROP_POS_FRAMES which is a 0-based index of the frame to be decoded/captured next.
+                        #The second argument defines the frame number in range 0.0-1.0
+                        cap.set(1,frame_id+FRAME_ID_OFFSET);
+                        #Read the next frame from the video. If you set frame 749 above then the code will return the last frame.
+                        ret, frame = cap.read()
+                        
+                        frame_name = folder_output + '/' + 'Frame%d' % (frame_id)	  + '.' + FORMAT      
+                        if(JPEG_QUALITY!=0)	:
+                                        cv2.imwrite(frame_name, frame, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])		
+                        else:
+                                        cv2.imwrite(frame_name, frame)
+                        frame_detection+=1
+                        
+                
+                frame_id+=1
+                if frame_id>len(frames_VSUM[0])-1:
+                                break;
+                if frame_id==length:   
+                        #print 'END OF VECTOR'      
+                        break
+        
+        print 'FRAMES DETECTED:',frame_detection
 
 	cap.release()
 	return length
@@ -520,7 +537,7 @@ def get_frame_without_ID(parameters):
 #Arreglos de numeros de ID de keyframes
 def get_frame_with_ID(parameters):
 
-	VIDEO_NAME=	parameters.video
+	VIDEO_PATH=	parameters.video
 	USERS_CSV=	parameters.users_csv
 	VSUM_CSV=	parameters.vsum_csv
 	FORMAT =  	parameters.format
@@ -544,7 +561,7 @@ def get_frame_with_ID(parameters):
 	parameters.output_path
 	"""
 
-	cap = cv2.VideoCapture(VIDEO_NAME)
+	cap = cv2.VideoCapture(VIDEO_PATH)
 
 	if cap:
 		print "VIDEO OPENED"
@@ -563,15 +580,29 @@ def get_frame_with_ID(parameters):
 
 	frames=np.array(csv_to_matrix(USERS_CSV)) 
 
-	main_folder_output=VIDEO_NAME
 
-	main_folder_output = main_folder_output.split('/')[3] #Elminate the ../../ +
+        # Get the video name from path.
+        video_name = os.path.basename(VIDEO_PATH)
 
-	main_folder_output = main_folder_output.split('.')[0] #Elminate the file extension
+        # Remove the file extension.
+        video_name = video_name.split('.')[0]
 
-	#main_folder_output = "../../output/" + main_folder_output #Run from osm_utility folder
+        OUTPUT_FOLDER_NAME = 'output'
 
-	main_folder_output = "../output/" + main_folder_output
+        if not os.path.exists(OUTPUT_FOLDER_NAME):
+            os.makedirs(OUTPUT_FOLDER_NAME)
+
+        main_folder_output = os.path.join(OUTPUT_FOLDER_NAME, video_name)
+
+	# main_folder_output=VIDEO_PATH
+        #
+	# main_folder_output = main_folder_output.split('/')[3] #Elminate the ../../ +
+        #
+	# main_folder_output = main_folder_output.split('.')[0] #Elminate the file extension
+        #
+	# #main_folder_output = "../../output/" + main_folder_output #Run from osm_utility folder
+        #
+	# main_folder_output = "../output/" + main_folder_output
 
 
 	setattr(param, 'output_path', main_folder_output)
@@ -603,7 +634,7 @@ def get_frame_with_ID(parameters):
 	n_users = frames.shape[0]
 	
 	
-	if parameters.lfovs & reference_exist:
+	if reference_exist:
 
 		return length
 
@@ -660,54 +691,54 @@ def get_frame_with_ID(parameters):
 	#vsum
 
 
-	if not parameters.lfovs:
+	# if not parameters.lfovs:
 
-		frame_id=0
+        frame_id=0
 
-		frame_detection=0;
+        frame_detection=0;
 
-		folder_output=data_folder
-		frames_VSUM=np.array(csv_to_matrix(VSUM_CSV)) 
+        folder_output=data_folder
+        frames_VSUM=np.array(csv_to_matrix(VSUM_CSV)) 
 
-		length_array=len(frames_VSUM[0])
+        length_array=len(frames_VSUM[0])
 
-			
-		if os.path.exists(folder_output) == 0:
-			os.mkdir(folder_output)
-		else:
-			print 'DIRECTORY', folder_output, 'EXISTS'
+                
+        if os.path.exists(folder_output) == 0:
+                os.mkdir(folder_output)
+        else:
+                print 'DIRECTORY', folder_output, 'EXISTS'
 
-			
-		while (cap.isOpened()):
-				
+                
+        while (cap.isOpened()):
+                        
 
-			#print 'id',frame_id,'  detect',frame_detection 
-			if frame_detection==length_array:
-				break
-			if int(frames_VSUM[0][frame_detection])==frame_id:
-				#print 'frame detected' , frame_id
-				
-				#The first argument of cap.set(), number 2 defines that parameter for setting the frame selection.
-				#Number 2 defines flag CV_CAP_PROP_POS_FRAMES which is a 0-based index of the frame to be decoded/captured next.
-				#The second argument defines the frame number in range 0.0-1.0
-				cap.set(1,frame_id+FRAME_ID_OFFSET);
-				#Read the next frame from the video. If you set frame 749 above then the code will return the last frame.
-				ret, frame = cap.read()
-				
-				frame_name = folder_output + '/' + 'Frame%d' % (frame_id)	  + '.' + FORMAT
-				if(frame_id<length):
-					if(JPEG_QUALITY!=0)	:
-						cv2.imwrite(frame_name, frame, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])	
-					else:
-						cv2.imwrite(frame_name, frame)	
-				#cv2.imwrite(frame_name, frame)
-				frame_detection+=1
-			
-			frame_id+=1
+                #print 'id',frame_id,'  detect',frame_detection 
+                if frame_detection==length_array:
+                        break
+                if int(frames_VSUM[0][frame_detection])==frame_id:
+                        #print 'frame detected' , frame_id
+                        
+                        #The first argument of cap.set(), number 2 defines that parameter for setting the frame selection.
+                        #Number 2 defines flag CV_CAP_PROP_POS_FRAMES which is a 0-based index of the frame to be decoded/captured next.
+                        #The second argument defines the frame number in range 0.0-1.0
+                        cap.set(1,frame_id+FRAME_ID_OFFSET);
+                        #Read the next frame from the video. If you set frame 749 above then the code will return the last frame.
+                        ret, frame = cap.read()
+                        
+                        frame_name = folder_output + '/' + 'Frame%d' % (frame_id)	  + '.' + FORMAT
+                        if(frame_id<length):
+                                if(JPEG_QUALITY!=0)	:
+                                        cv2.imwrite(frame_name, frame, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])	
+                                else:
+                                        cv2.imwrite(frame_name, frame)	
+                        #cv2.imwrite(frame_name, frame)
+                        frame_detection+=1
+                
+                frame_id+=1
 
-			if frame_id==length:   
-				#print 'END OF VECTOR'      
-				break
+                if frame_id==length:   
+                        #print 'END OF VECTOR'      
+                        break
 		
 
 	cap.release()
@@ -745,20 +776,20 @@ def create_sh(parameters,path):
 
 
 	if method==False:
-		if parameters.lfovs:	
-			output_lfovs=parameters.output_path + "/data"
-			#command='./../LFOVS/build/opencv_binary -i=../videos/VSUMM/v21.mpg -o=../output/v21/data -s=0.4 -n=0.96 -d=0.25 -t=30 -e=3'
-			command='./../LFOVS/build/opencv_binary -i={0} -o={1} -s={2} -n={3} -d={4} -t={5} -e={6} \n'
-			file.write(command.format(parameters.video, output_lfovs, parameters.lfovs_s, parameters.lfovs_n, parameters.lfovs_d,  parameters.lfovs_t, parameters.lfovs_e))
-		command_2='../src/build/osm --method bhi -e {0} -d {1} -n {2} -f {3} -r "{4}/reference" -i "{4}/data/" --verbose \n'
+		# if parameters.lfovs:	
+		# 	output_lfovs=parameters.output_path + "/data"
+		# 	#command='./../LFOVS/build/opencv_binary -i=../videos/VSUMM/v21.mpg -o=../output/v21/data -s=0.4 -n=0.96 -d=0.25 -t=30 -e=3'
+		# 	command='./../LFOVS/build/opencv_binary -i={0} -o={1} -s={2} -n={3} -d={4} -t={5} -e={6} \n'
+		# 	file.write(command.format(parameters.video, output_lfovs, parameters.lfovs_s, parameters.lfovs_n, parameters.lfovs_d,  parameters.lfovs_t, parameters.lfovs_e))
+		command_2='../build/osm --method bhi -e {0} -d {1} -n {2} -f {3} -r "{4}/reference" -i "{4}/data/" --verbose \n'
 		file.write(command_2.format(epsilon,distance,users,length,parameters.output_path))
 
 	else:
-		if parameters.lfovs:	
-			output_lfovs=parameters.output_path + "/data"
-			command='./../LFOVS/build/opencv_binary -i={0} -o={1} -s={2} -n={3} -d={4} -t={5} -e={6}  \n'
-			file.write(command.format(parameters.video, output_lfovs, parameters.lfovs_s, parameters.lfovs_n, parameters.lfovs_d,  parameters.lfovs_t, parameters.lfovs_e))
-		command_2='../src/build/osm --method cus -e {0} -n {1} -f {2} -r "{3}/reference" -i "{3}/data/" --verbose \n'
+		# if parameters.lfovs:	
+		# 	output_lfovs=parameters.output_path + "/data"
+		# 	command='./../LFOVS/build/opencv_binary -i={0} -o={1} -s={2} -n={3} -d={4} -t={5} -e={6}  \n'
+		# 	file.write(command.format(parameters.video, output_lfovs, parameters.lfovs_s, parameters.lfovs_n, parameters.lfovs_d,  parameters.lfovs_t, parameters.lfovs_e))
+		command_2='../build/osm --method cus -e {0} -n {1} -f {2} -r "{3}/reference" -i "{3}/data/" --verbose \n'
 		file.write(command_2.format(epsilon,users,length,parameters.output_path))
 
 	
@@ -784,17 +815,17 @@ def addline_sh(parameters):
 
 
 	if method==False:
-		if parameters.lfovs:	
-			output_lfovs=parameters.output_path + "/data"
-			command='./../LFOVS/build/opencv_binary -i={0} -o={1} -s={2} -n={3} -d={4} -t={5} -e={6} -v \n'
-			file.write(command.format(parameters.video, output_lfovs, parameters.lfovs_s, parameters.lfovs_n, parameters.lfovs_d,  parameters.lfovs_t, parameters.lfovs_e))
+		# if parameters.lfovs:	
+		# 	output_lfovs=parameters.output_path + "/data"
+		# 	command='./../LFOVS/build/opencv_binary -i={0} -o={1} -s={2} -n={3} -d={4} -t={5} -e={6} -v \n'
+		# 	file.write(command.format(parameters.video, output_lfovs, parameters.lfovs_s, parameters.lfovs_n, parameters.lfovs_d,  parameters.lfovs_t, parameters.lfovs_e))
 		command_2='../src/build/osm --method bhi -e {0} -d {1} -n {2} -f {3} -r "{4}/reference" -i "{4}/data/" --verbose \n'
 		file.write(command_2.format(epsilon,distance,users,length,parameters.output_path))
 	else:
-		if parameters.lfovs:	
-			output_lfovs=parameters.output_path + "/data"
-			command='./../LFOVS/build/opencv_binary -i={0} -o={1} -s={2} -n={3} -d={4} -t={5} -e={6} -v \n'
-			file.write(command.format(parameters.video, output_lfovs, parameters.lfovs_s, parameters.lfovs_n, parameters.lfovs_d,  parameters.lfovs_t, parameters.lfovs_e))
+		# if parameters.lfovs:	
+		# 	output_lfovs=parameters.output_path + "/data"
+		# 	command='./../LFOVS/build/opencv_binary -i={0} -o={1} -s={2} -n={3} -d={4} -t={5} -e={6} -v \n'
+		# 	file.write(command.format(parameters.video, output_lfovs, parameters.lfovs_s, parameters.lfovs_n, parameters.lfovs_d,  parameters.lfovs_t, parameters.lfovs_e))
 		command_2='../src/build/osm --method cus -e {0} -n {1} -f {2} -r "{3}/reference" -i "{3}/data/" --verbose  \n'
 		file.write(command_2.format(epsilon,users,length,parameters.output_path))
 
@@ -852,94 +883,94 @@ def multiple_metric(parameters):
 
 if __name__ == '__main__':
 
-	"""
-	Parameters:
-		
-		parameters.debug
-		parameters.group
-		parameters.video
-		parameters.users_csv
-		parameters.vsum_csv
-		parameters.label
-		parameters.method
-		parameters.format
-		parameters.quality
-		parameters.offset
-		parameters.epsilon
-		parameters.distance
-		parameters.users
-		parameters.video_length
-		parameters.output_path
+    """
+    Parameters:
 
-	"""
-	counter=0
+        parameters.debug
+        parameters.group
+        parameters.video
+        parameters.users_csv
+        parameters.vsum_csv
+        parameters.label
+        parameters.method
+        parameters.format
+        parameters.quality
+        parameters.offset
+        parameters.epsilon
+        parameters.distance
+        parameters.users
+        parameters.video_length
+        parameters.output_path
 
-	param = process_args() 
+    """
+    # counter=0
 
-	if param.group:
-		videos=multiple_metric(param)
-		videos_path=param.video
-		users_path=param.users_csv
-		vsum_path=param.vsum_csv
+    param = process_args() 
 
-		output_label(param)	
+    if param.group:
+        videos=multiple_metric(param)
+        videos_path=param.video
+        users_path=param.users_csv
+        vsum_path=param.vsum_csv
 
-
-		for i in range(0,len(videos)):
-		#for i in range(0,5):
-		
-			param.video=videos_path + "/" + videos[i]			
-			param.users_csv=users_path + "/" + videos[i].split('.')[0]
-			param.vsum_csv=vsum_path + "/" + videos[i].split('.')[0]
+        output_label(param)	
 
 
-			binary_flag = is_binary_selection(param)
+        for i in range(0,len(videos)):
+            #for i in range(0,5):
 
-			if binary_flag==1: #File with 0s & 1s			
-				video_length = get_frame_without_ID(param)
-			elif binary_flag==0:  #File with frame numbers
-				video_length = get_frame_with_ID(param)
-			else:
-				print "PROBLEM WITH CSV INPUT FORMAT"
+            param.video=videos_path + "/" + videos[i]			
+            param.users_csv=users_path + "/" + videos[i].split('.')[0]
+            param.vsum_csv=vsum_path + "/" + videos[i].split('.')[0]
 
 
+            binary_flag = is_binary_selection(param)
+
+            if binary_flag==1: #File with 0s & 1s			
+                video_length = get_frame_without_ID(param)
+            elif binary_flag==0:  #File with frame numbers
+                video_length = get_frame_with_ID(param)
+            else:
+                print "PROBLEM WITH CSV INPUT FORMAT"
 
 
-			setattr(param, 'video_length', video_length)
-
-		
-			if i==0:
-				create_sh(param,videos_path)
-			else:
-				addline_sh(param)
 
 
-		
-	else: ################################################################
-	
-		binary_flag = is_binary_selection(param)
-		
-		if binary_flag==1: #File with 0s & 1s			
-			video_length = get_frame_without_ID(param)
-			
-		elif binary_flag==0:  #File with frame numbers
-			video_length = get_frame_with_ID(param)
-			
-		else:
-			print "PROBLEM WITH CSV INPUT FORMAT"
-
-		setattr(param, 'video_length', video_length)	
-
-		output_label(param)
-		
-		if param.updatesh:
-			if path.exists('run.sh'):
-				addline_sh(param)
-			else:
-				create_sh(param,0)
-		else:
-			create_sh(param,0)
-	
+            setattr(param, 'video_length', video_length)
 
 
-	print "FINISHED"
+            if i==0:
+                create_sh(param,videos_path)
+            else:
+                addline_sh(param)
+
+
+
+    else: ################################################################
+
+        binary_flag = is_binary_selection(param)
+
+        if binary_flag==1: #File with 0s & 1s			
+            video_length = get_frame_without_ID(param)
+
+        elif binary_flag==0:  #File with frame numbers
+            video_length = get_frame_with_ID(param)
+
+        else:
+            print "PROBLEM WITH CSV INPUT FORMAT"
+
+        setattr(param, 'video_length', video_length)	
+
+        output_label(param)
+
+        if param.updatesh:
+            if path.exists('run.sh'):
+                addline_sh(param)
+            else:
+                create_sh(param,0)
+        else:
+            create_sh(param,0)
+
+
+
+    print "FINISHED"
