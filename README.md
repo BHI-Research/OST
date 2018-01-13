@@ -1,3 +1,6 @@
+> ## A new version is coming...
+> A new version of OSM is around the corner, including more metrics and tools. Check out the [develop branch](https://github.com/leanbalma/OSM/tree/develop)!
+
 # OSM++ - Open Summarization Metrics
 
 Open Summarization Metrics (OSM) is a evaluation method for video summaries. It is written in C++ and based on OpenCV. OSM improves [CUS evaluation method](https://sites.google.com/site/vsummsite/home). The most relevant benefits are the support of Cohen's Kappa coefficient, a flexible evaluation framework, and a faster evaluation time.
