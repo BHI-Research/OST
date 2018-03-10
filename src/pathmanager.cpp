@@ -16,7 +16,7 @@ PathManager::PathManager( string dirPath ) {
         while( ( ent = readdir( dir ) ) != NULL ) {
 
 
-            if( getNumberFromString( (string)ent->d_name) > 0 ) {
+            if( (string)ent->d_name != "." && (string)ent->d_name != ".." && getNumberFromString( (string)ent->d_name) >= 0 ) {
                 Mat matImage = imread( dirPath + (string)ent->d_name, IMREAD_COLOR );
 
                 Frame image( getNumberFromString( (string)ent->d_name ), matImage );
