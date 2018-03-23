@@ -1,2 +1,1 @@
-
 rm ../output/* -f -r
