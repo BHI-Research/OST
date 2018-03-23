@@ -5,6 +5,6 @@ echo "  Users: 5"
 echo "  Simple zone"
 echo "Running BHI..."
 
-../../build/osm --method bhi -e 0.4 -d 120 -n 5 -f 2091 -r "reference/" -i "data/"  --verbose
+../../evaluator/build/evaluator --method bhi -e 0.4 -d 120 -n 5 -f 2091 -r "reference/" -i "data/"  --verbose
 
 echo "Done!"

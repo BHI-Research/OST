@@ -5,6 +5,6 @@ echo "  Users: 5"
 echo "  Double zone"
 echo "Running BHI..."
 
-../../build/osm --method bhi -e 0.4 -d 60 -n 5 -f 2091 -r "reference/" -i "data/" --enable-double-zone  --verbose
+../../evaluator/build/evaluator --method bhi -e 0.4 -d 60 -n 5 -f 2091 -r "reference/" -i "data/" --enable-double-zone  --verbose
 
 echo "Done!"
