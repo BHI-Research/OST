@@ -3,10 +3,9 @@
 Open Summarization Toolbox (OST) is an open evaluation framework for video summarization. OST is compatible with existing datasets and published results.
 OST consists of:
 
-* [Evaluator](./evaluator)
-* [Tools](./tools)
-* [User Summaries](./user_summaries)
-* [Published Results](./published_results)
+* The [Evaluator](./evaluator) with [examples](./examples) showing how to use it.
+* A set of [Tools](./tools)
+* A dataset including [User Summaries](./user_summaries) and [Published Results](./published_results) in CSV format.
 
 
 ## Contributors
