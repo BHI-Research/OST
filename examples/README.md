@@ -1,4 +1,4 @@
-# OSM++ - Examples
+# Evaluator - Examples
 
 This folder contains examples that you can use to easily test the OST's Evaluator. Just compile the source code following the instructions in the `evaluator` folder and
 run the scripts that you'll find in each folder.
