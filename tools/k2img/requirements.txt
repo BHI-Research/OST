@@ -1,0 +1,8 @@
+h5py==2.7.1
+numexpr==2.6.4
+numpy==1.13.3
+pandas==0.21.1
+python-dateutil==2.6.1
+pytz==2017.3
+six==1.11.0
+tables==3.4.2
