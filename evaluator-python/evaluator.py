@@ -1,10 +1,13 @@
+from __future__ import print_function
 import argparse
 import h5py
+import re
 import numpy as np
 import cv2
 import os
 import shutil
 import glob
+import ntpath
 
 AUTOMATIC_SUMMARY_FRAMES_PATH   = 'data/data'
 USER_SUMMARIES_FRAMES_BASE_PATH = 'data/reference'
@@ -14,6 +17,8 @@ parser.add_argument('-a', '--automatic_summarization', type=str, required=True)
 parser.add_argument('-u', '--users_summarization', type=str, required=True)
 parser.add_argument('-v', '--original_video', type=str, required=True)
 parser.add_argument('-e', '--epsilon', type=float, required=True)
+parser.add_argument('-d', '--distance', type=int)
+parser.add_argument('-m', '--method', type=str, required=True, choices=['cus', 'bhi'])
 parser.add_argument('--user_summary_path', type=str, required=True, help="User summary path in the h5 file (ex video_11/user_summary)")
 parser.add_argument('--automatic_summary_path', type=str, required=True, help="Automatic summary path in the h5 file (ex video_11/machine_summary)")
 
@@ -72,7 +77,7 @@ def prepare_folders(uSummary, aSummary, video):
             cv2.imwrite(frame_name, frame)
 
 
-def computeF1(userFolder, refImages, refPath, epsilon):
+def computeMetrics(userFolder, predictionImages, refPath, epsilon, videoFrames, distance):
     h_bins = 50
     s_bins = 60
     histSize = [h_bins, s_bins]
@@ -81,18 +86,31 @@ def computeF1(userFolder, refImages, refPath, epsilon):
     ranges = h_ranges + s_ranges # concat lists
     channels = [0, 1]
 
-    usrImages = sorted(glob.glob(refPath + '/' + userFolder + '/*.jpg'))
+    usrImages = sorted(glob.glob(refPath + '/' + userFolder + '/*.*'))
 
-    totalFramesReference = len(refImages)
+    totalFramesReference = len(predictionImages)
     totalFramesUser = len(usrImages)
     usrImagesCopy = usrImages.copy()
-    refImagesCopy = refImages.copy()
+    refImagesCopy = predictionImages.copy()
     matched = []
 
-    for rImg in refImages:
+    for rImg in predictionImages:
         usrImages = usrImagesCopy.copy()
 
         for uImg in usrImages:
+
+            if distance is not None:
+                # Get the position of the reference frame.
+                rFrameName = ntpath.basename(rImg)
+                rFramePosition = re.findall(r'\d+', rFrameName)[0]
+
+                # Get the position of the user frame.
+                uFrameName = ntpath.basename(uImg)
+                uFramePosition = re.findall(r'\d+', uFrameName)[0]
+
+                if abs(int(rFramePosition) - int(uFramePosition)) > distance:
+                    continue
+
             first = cv2.imread(rImg)
             second = cv2.imread(uImg)
 
@@ -107,39 +125,73 @@ def computeF1(userFolder, refImages, refPath, epsilon):
 
             diff = cv2.compareHist(hist_first, hist_second, cv2.HISTCMP_CORREL)
 
-            if diff > epsilon:
+            if abs(diff) > epsilon:
                 matched.append(rImg)
                 refImagesCopy.remove(rImg)
                 usrImagesCopy.remove(uImg)
                 break
 
     totalMatched = len(matched)
-    precision = totalMatched / totalFramesReference
-    recall = totalMatched / totalFramesUser
-    f1 = (2 * precision * recall) / (precision + recall)
+    precision = 1.0 if totalFramesReference == 0 else totalMatched / totalFramesReference
+    recall = 1.0 if totalFramesUser == 0 else totalMatched / totalFramesUser
+    f1 = 0 if precision == 0 and recall == 0 else (2 * precision * recall) / (precision + recall)
+
+    # Kappa
+    nYmYr = totalMatched
+    nNmYr = totalFramesReference - totalMatched
+    nYmNr = totalFramesReference - totalMatched
+    nNmNr = videoFrames - nYmYr - nNmYr - nYmNr
+
+    pO = (nYmYr + nNmNr) / videoFrames
+
+    pEn = ((nNmNr + nNmYr) / videoFrames) * (nNmNr + nYmNr) / videoFrames
+    pEy = ((nYmYr + nYmNr) / videoFrames) * (nYmYr + nNmYr) / videoFrames
+    pE = pEn + pEy
+    kappa = (pO - pE) / (1 - pE)
 
     print('Comparing with', userFolder)
     print('Frames matched: ', totalMatched)
     print('Non-matched reference: ', len(refImagesCopy))
     print('Non-matched user: ', len(usrImagesCopy))
     print('F1:', f1)
+    print('Kappa:', kappa)
     print('--------------')
 
-    return f1
+    return f1, kappa
 
 
-def computeCUS(refPath, predictionPath, epsilon):
-
-    refImages = sorted(glob.glob(predictionPath + '/*.jpg'))
+def computeCUS(refPath, predictionPath, epsilon, videoFrames):
+    predictionImages = sorted(glob.glob(predictionPath + '/*.*'))
 
     userFolders = list(filter(lambda x: os.path.isdir(refPath+ '/' + x), os.listdir(refPath)))
     average_f1 = 0
+    average_kappa = 0
 
     for userFolder in userFolders:
-        average_f1 = average_f1 + computeF1(userFolder, refImages, refPath, epsilon)
+        f1, kappa = computeMetrics(userFolder, predictionImages, refPath, epsilon, videoFrames, None)
+        average_f1 = average_f1 + f1
+        average_kappa = average_kappa + kappa
 
     average_f1 = average_f1 / len(userFolders)
-    print('Average F1:', round(average_f1, 2))
+    average_kappa = average_kappa / len(userFolders)
+    return average_f1, average_kappa
+
+
+def computeBHI(refPath, predictionPath, epsilon, videoFrames, distance):
+    predictionImages = sorted(glob.glob(predictionPath + '/*.*'))
+
+    userFolders = list(filter(lambda x: os.path.isdir(refPath+ '/' + x), os.listdir(refPath)))
+    average_f1 = 0
+    average_kappa = 0
+
+    for userFolder in userFolders:
+        f1, kappa = computeMetrics(userFolder, predictionImages, refPath, epsilon, videoFrames, distance)
+        average_f1 = average_f1 + f1
+        average_kappa = average_kappa + kappa
+
+    average_f1 = average_f1 / len(userFolders)
+    average_kappa = average_kappa / len(userFolders)
+    return average_f1, average_kappa
 
 
 if __name__ == '__main__':
@@ -155,11 +207,28 @@ if __name__ == '__main__':
     automatic_summary = aFile
     for tableName in args.automatic_summary_path.split('/'):
         automatic_summary = automatic_summary[tableName]
+    automatic_summary = automatic_summary[:]
 
     prepare_folders(user_summaries, automatic_summary, args.original_video)
 
-    computeCUS(
-        USER_SUMMARIES_FRAMES_BASE_PATH,
-        AUTOMATIC_SUMMARY_FRAMES_PATH,
-        args.epsilon
-    )
+    cap = cv2.VideoCapture(args.original_video)
+    videoLength = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    if args.method == 'cus':
+        f1, kappa = computeCUS(
+            USER_SUMMARIES_FRAMES_BASE_PATH,
+            AUTOMATIC_SUMMARY_FRAMES_PATH,
+            args.epsilon,
+            videoLength
+        )
+    else:
+        f1, kappa = computeBHI(
+            USER_SUMMARIES_FRAMES_BASE_PATH,
+            AUTOMATIC_SUMMARY_FRAMES_PATH,
+            args.epsilon,
+            videoLength,
+            args.distance
+        )
+
+    print('Average F1:', round(f1, 2))
+    print('Average Kappa:', round(kappa, 2))
