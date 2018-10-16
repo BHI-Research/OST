@@ -67,6 +67,9 @@ def prepare_folders(uSummary, aSummary, video,
         print('writing frame', frame_id)
         vidcap.set(1,frame_id);
         ret, frame = vidcap.read()
+        if not ret:
+            continue
+
         frame_name = aSummaryFramesPath + '/frame' + str(frame_id) + '.jpg'
         cv2.imwrite(frame_name, frame)
 
@@ -80,6 +83,9 @@ def prepare_folders(uSummary, aSummary, video,
             print('writing frame', frame_id)
             vidcap.set(1, frame_id);
             ret, frame = vidcap.read()
+            if not ret:
+                continue
+
             frame_name = uSummaryFramesPath + '/user' + str(index+1) + '/frame' + str(frame_id).zfill(4) + '.jpg'
             cv2.imwrite(frame_name, frame)
 
